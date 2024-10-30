@@ -1,79 +1,30 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# MyTasks - Task Management App
 
-# Getting Started
+MyTasks is a simple and effective React Native app that helps users manage tasks effortlessly. The app allows users to add, delete, view details, and update the status of each task, making it easy to stay organized and on top of to-do lists. Built with a focus on functionality and a user-friendly interface, MyTasks is suitable for daily task management needs, helping users prioritize and track progress efficiently.
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+# Features
 
-## Step 1: Start the Metro Server
+- Add Tasks: Users can easily create new tasks with titles, descriptions, and statuses.
+- Delete Tasks: One-tap task deletion allows users to remove tasks they no longer need.
+- Task Status Update: Users can change task statuses (e.g., ongoing, completed, pending,cancel) to keep track of their progress.
+- View Task Details: View detailed information for each task, including its title, description, creation date, and current status.
+- User-Friendly Interface: Built with UI Kitten for an aesthetically pleasing and functional design.
+- Data Persistence: Tasks are stored using AsyncStorage, ensuring tasks remain saved even if the app is closed or restarted.
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+# Libraries Used
 
-To start Metro, run the following command from the _root_ of your React Native project:
-
-```bash
-# using npm
-npm start
-
-# OR using Yarn
-yarn start
-```
-
-## Step 2: Start your Application
-
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
-
-### For Android
-
-```bash
-# using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### For iOS
-
-```bash
-# using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
-
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
-
-## Step 3: Modifying your App
-
-Now that you have successfully run the app, let's modify it.
-
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
-
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+- @eva-design/eva: Provides theming and design system support, used together with UI Kitten for a consistent look and feel across the app.
+- @react-native-async-storage/async-storage: Enables persistent data storage, allowing tasks to be saved locally on the user's device.
+- @react-navigation/native: Core library for handling navigation within the app, allowing users to navigate between screens.
+- @react-navigation/native-stack: Implements stack-based navigation, which provides a stack-like transition between screens.
+- @ui-kitten/components: UI components library based on Eva Design System, used for building the user interface with a clean and modern design.
+- formik: A form management library that simplifies handling form state and validation, improving the user experience for creating and updating tasks.
+- iconsax-react-native: Icon library for React Native, used to add icons that enhance visual cues and user interactions.
+- moment: Library for managing and formatting dates, used here for displaying task creation dates and due dates in a user-friendly way.
+- react: JavaScript library for building user interfaces, the core framework for creating React Native applications.
+- react-native: Core framework for building cross-platform mobile applications.
+- react-native-safe-area-context: Provides safe area support to ensure the UI aligns with device boundaries, especially on notched devices.
+- react-native-screens: Optimizes navigation and screen transitions by providing native navigation performance enhancements.
+- react-native-svg: Provides SVG support, allowing the use of vector images and icons within the app.
+- react-native-uuid: Library for generating unique identifiers (UUIDs) for each task, ensuring each task has a unique ID.
+- yup: Schema builder for form validation, used together with Formik to validate form inputs and ensure data integrity.

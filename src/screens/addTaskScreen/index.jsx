@@ -1,86 +1,79 @@
-import {View, StyleSheet, Alert} from 'react-native';
 import {Formik} from 'formik';
-import {Button, Input, Radio, RadioGroup} from '@ui-kitten/components';
-import CustomDatePicker from '../../components/UI/CustomDatePicker';
-import {taskSchema} from '../../utils/validation';
+import {StyleSheet, View, Alert} from 'react-native';
+import {Input, Button, RadioGroup, Radio} from '@ui-kitten/components';
+
+import taskSchema from '../../utils/validation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useNavigation} from '@react-navigation/native';
-import {TASKS} from '../../utils/routes';
 
-const AddTaskScreen = () => {
-  const navigation = useNavigation();
+import uuid from 'react-native-uuid';
+import CustomDatePicker from '../../components/UI/CustomDatePicker';
+import {status} from '../../utils/constats';
 
+const AddTask = () => {
   const saveTask = async values => {
     try {
-      await AsyncStorage.setItem('task', JSON.stringify(values));
-      console.log('basarili ');
+      const savedTasks = await AsyncStorage.getItem('tasks');
+      let myTask = savedTasks ? JSON.parse(savedTasks) : [];
+      myTask.push(values);
+      await AsyncStorage.setItem('tasks', JSON.stringify(myTask));
     } catch (error) {
-      console.log('hata ', error);
+      console.log(error);
     }
-  };
-
-  const handleSubmit = () => {
-    Alert.alert('Task added successfully');
-    handleSubmit();
   };
 
   return (
     <View style={styles.container}>
       <Formik
         initialValues={{
-          title: 'Software lesson',
-          description: 'Learn more about software',
+          id: uuid.v4(),
+          title: 'Software',
+          description: 'Learn more about software....',
           startDate: null,
           endDate: null,
           category: null,
+          status: status.ONGOING,
         }}
         validationSchema={taskSchema}
-        onSubmit={values => {
-          saveTask(values);
-          navigation.navigate(TASKS);
-        }}>
-        {({handleChange, handleSubmit, values, errors, setFieldValue}) => (
+        onSubmit={values => saveTask(values)}>
+        {({handleChange, handleSubmit, values, setFieldValue, errors}) => (
           <View>
             <Input
               size="large"
-              placeholder=""
+              style={{marginVertical: 10}}
               value={values.title}
               label={'Title'}
+              placeholder=""
               onChangeText={handleChange('title')}
-              style={{marginVertical: 10}}
-              status={errors.title ? 'danger' : 'success'}
+              status={errors.title ? 'danger' : 'basic'}
               caption={errors.title}
             />
-
             <Input
               multiline
               size="large"
-              placeholder=""
+              style={{marginVertical: 10}}
               value={values.description}
               label={'Description'}
+              placeholder=""
               onChangeText={handleChange('description')}
-              style={{marginVertical: 10}}
-              status={errors.description ? 'danger' : 'success'}
+              status={errors.description ? 'danger' : 'basic'}
               caption={errors.description}
             />
-
             <CustomDatePicker
-              label={'Start Date'}
               size="large"
               style={{marginVertical: 10}}
               date={values.startDate}
+              label={'Start Date'}
               onSelectDate={date => setFieldValue('startDate', date)}
-              status={errors.startDate ? 'danger' : 'success'}
+              status={errors.startDate ? 'danger' : 'basic'}
               caption={errors.startDate}
             />
-
             <CustomDatePicker
-              label={'End Date'}
               size="large"
               style={{marginVertical: 10}}
               date={values.endDate}
+              label={'End Date'}
               onSelectDate={date => setFieldValue('endDate', date)}
-              status={errors.endDate ? 'danger' : 'success'}
+              status={errors.endDate ? 'danger' : 'basic'}
               caption={errors.endDate}
             />
 
@@ -93,9 +86,9 @@ const AddTaskScreen = () => {
             </RadioGroup>
 
             <Button
-              onPress={handleSubmit}
               status="success"
-              style={{marginTop: 30}}>
+              style={{marginTop: 30}}
+              onPress={handleSubmit}>
               CREATE
             </Button>
           </View>
@@ -105,13 +98,11 @@ const AddTaskScreen = () => {
   );
 };
 
-export default AddTaskScreen;
+export default AddTask;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 15,
-    paddingVertical: 15,
-    backgroundColor: '#f5f5f5',
   },
 });
