@@ -1,20 +1,24 @@
 import {Formik} from 'formik';
-import {StyleSheet, View, Alert} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {Input, Button, RadioGroup, Radio} from '@ui-kitten/components';
-
-import taskSchema from '../../utils/validation';
+import {taskSchema} from '../../utils/validation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import uuid from 'react-native-uuid';
 import CustomDatePicker from '../../components/UI/CustomDatePicker';
 import {status} from '../../utils/constats';
+import {useNavigation} from '@react-navigation/native';
+import {TASKS} from '../../utils/routes';
 
 const AddTask = () => {
+  const navigation = useNavigation();
+
   const saveTask = async values => {
     try {
+      // gorev varsa aliyoruz
       const savedTasks = await AsyncStorage.getItem('tasks');
       let myTask = savedTasks ? JSON.parse(savedTasks) : [];
       myTask.push(values);
+      // kaydediyoruz
       await AsyncStorage.setItem('tasks', JSON.stringify(myTask));
     } catch (error) {
       console.log(error);
@@ -34,7 +38,11 @@ const AddTask = () => {
           status: status.ONGOING,
         }}
         validationSchema={taskSchema}
-        onSubmit={values => saveTask(values)}>
+        validateOnChange={true}
+        validateOnBlur={true}
+        onSubmit={values => {
+          saveTask(values), navigation.navigate(TASKS);
+        }}>
         {({handleChange, handleSubmit, values, setFieldValue, errors}) => (
           <View>
             <Input
@@ -44,7 +52,7 @@ const AddTask = () => {
               label={'Title'}
               placeholder=""
               onChangeText={handleChange('title')}
-              status={errors.title ? 'danger' : 'basic'}
+              status={errors.title ? 'danger' : 'success'}
               caption={errors.title}
             />
             <Input
@@ -55,7 +63,7 @@ const AddTask = () => {
               label={'Description'}
               placeholder=""
               onChangeText={handleChange('description')}
-              status={errors.description ? 'danger' : 'basic'}
+              status={errors.description ? 'danger' : 'success'}
               caption={errors.description}
             />
             <CustomDatePicker
@@ -64,16 +72,17 @@ const AddTask = () => {
               date={values.startDate}
               label={'Start Date'}
               onSelectDate={date => setFieldValue('startDate', date)}
-              status={errors.startDate ? 'danger' : 'basic'}
+              status={errors.startDate ? 'danger' : 'success'}
               caption={errors.startDate}
             />
+
             <CustomDatePicker
               size="large"
               style={{marginVertical: 10}}
               date={values.endDate}
               label={'End Date'}
               onSelectDate={date => setFieldValue('endDate', date)}
-              status={errors.endDate ? 'danger' : 'basic'}
+              status={errors.endDate ? 'danger' : 'success'}
               caption={errors.endDate}
             />
 

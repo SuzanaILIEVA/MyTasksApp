@@ -1,29 +1,33 @@
-import {FlatList, StyleSheet, Text, View, RefreshControl} from 'react-native';
+import {FlatList, StyleSheet, View, RefreshControl} from 'react-native';
 import {ADDTASKS} from '../../utils/routes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useEffect, useState} from 'react';
-
+import React, {useEffect, useState} from 'react';
 import FloatActionButton from '../../components/UI/FloatActionButton';
 import TaskCart from '../../components/home/TaskCart';
 import HeaderComponent from '../../components/home/HeaderComponent';
+import {useFocusEffect} from '@react-navigation/native';
 
 const Home = ({navigation}) => {
   const [refreshing, setRefreshing] = useState(false);
   const [tasks, setTasks] = useState([]);
   const [ongoing, setOngoing] = useState(0);
   const [pending, setPending] = useState(0);
-  const [complated, setComplated] = useState(0);
+  const [completed, setCompleted] = useState(0);
   const [cancel, setCancel] = useState(0);
 
   const getTask = async () => {
     try {
       const savedTask = await AsyncStorage.getItem('tasks');
-      setTasks(JSON.parse(savedTask));
-      let complatedCount = 0;
+      // setTasks(JSON.parse(savedTask));
+      const taskList = savedTask ? JSON.parse(savedTask) : [];
+
+      setTasks(taskList); //  tasks listi guncelle
+
+      let completedCount = 0;
       let pendingCount = 0;
       let ongoingCount = 0;
       let cancelCount = 0;
-      for (const task of JSON.parse(savedTask)) {
+      for (const task of taskList) {
         if (task.status === 1) {
           ongoingCount++;
         }
@@ -31,7 +35,7 @@ const Home = ({navigation}) => {
           pendingCount++;
         }
         if (task.status === 3) {
-          complatedCount++;
+          completedCount++;
         }
         if (task.status === 4) {
           cancelCount++;
@@ -39,7 +43,7 @@ const Home = ({navigation}) => {
 
         setOngoing(ongoingCount);
         setPending(pendingCount);
-        setComplated(complatedCount);
+        setCompleted(completedCount);
         setCancel(cancelCount);
       }
     } catch (error) {
@@ -57,6 +61,13 @@ const Home = ({navigation}) => {
     getTask();
   }, []);
 
+  //SAYFANIN OTOMATIK YENILENMESI ICIN
+  useFocusEffect(
+    React.useCallback(() => {
+      getTask();
+    }, []),
+  );
+
   return (
     <View style={styles.container}>
       <FlatList
@@ -65,7 +76,7 @@ const Home = ({navigation}) => {
           <HeaderComponent
             ongoing={ongoing}
             pending={pending}
-            complated={complated}
+            completed={completed}
             cancel={cancel}
           />
         }

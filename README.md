@@ -28,3 +28,7 @@ MyTasks is a simple and effective React Native app that helps users manage tasks
 - react-native-svg: Provides SVG support, allowing the use of vector images and icons within the app.
 - react-native-uuid: Library for generating unique identifiers (UUIDs) for each task, ensuring each task has a unique ID.
 - yup: Schema builder for form validation, used together with Formik to validate form inputs and ensure data integrity.
+
+# Gif
+
+![](./src/assets/MyTasks.gif)

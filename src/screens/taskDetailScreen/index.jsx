@@ -1,4 +1,4 @@
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {ScrollView, StyleSheet, Text, useColorScheme, View} from 'react-native';
 import React from 'react';
 import {Divider, Button} from '@ui-kitten/components';
 import moment from 'moment';
@@ -6,9 +6,11 @@ import {setCategory} from '../../utils/function';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {colors} from '../../theme/colors';
 import {status, taskValues} from '../../utils/constats';
+import {useNavigation} from '@react-navigation/native';
 
 const TaskDetail = ({route}) => {
   const {item} = route?.params;
+  const navigation = useNavigation();
 
   // delete butonu taskları silmek için
   const deleteTask = async () => {
@@ -31,6 +33,8 @@ const TaskDetail = ({route}) => {
     } catch (error) {
       console.log('Görev silinirken hata oluştu:', error);
     }
+
+    navigation.goBack();
   };
 
   // update butonları için güncelleme
@@ -63,6 +67,8 @@ const TaskDetail = ({route}) => {
     } catch (error) {
       console.log('Görev güncellenirken hata oluştu:', error);
     }
+
+    navigation.goBack();
   };
 
   return (
@@ -74,8 +80,15 @@ const TaskDetail = ({route}) => {
             justifyContent: 'space-between',
             paddingVertical: 15,
           }}>
-          <Text style={{fontSize: 18, fontWeight: '500'}}>Title:</Text>
-          <Text>{item.title}</Text>
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: '500',
+              color: 'black',
+            }}>
+            Title:
+          </Text>
+          <Text style={styles.text}>{item.title}</Text>
         </View>
         <Divider />
         <View
@@ -84,8 +97,10 @@ const TaskDetail = ({route}) => {
             justifyContent: 'space-between',
             paddingVertical: 15,
           }}>
-          <Text style={{fontSize: 18, fontWeight: '500'}}>Description:</Text>
-          <Text>{item.description}</Text>
+          <Text style={{fontSize: 18, fontWeight: '500', color: 'black'}}>
+            Description:
+          </Text>
+          <Text style={styles.text}>{item.description}</Text>
         </View>
         <Divider />
         <View
@@ -94,8 +109,12 @@ const TaskDetail = ({route}) => {
             justifyContent: 'space-between',
             paddingVertical: 15,
           }}>
-          <Text style={{fontSize: 18, fontWeight: '500'}}>Start Date:</Text>
-          <Text>{moment(item.startDate).format('YYYY/MM/DD')}</Text>
+          <Text style={{fontSize: 18, fontWeight: '500', color: 'black'}}>
+            Start Date:
+          </Text>
+          <Text style={styles.text}>
+            {moment(item.startDate).format('DD/MM/YYYY')}
+          </Text>
         </View>
         <Divider />
         <View
@@ -104,8 +123,13 @@ const TaskDetail = ({route}) => {
             justifyContent: 'space-between',
             paddingVertical: 15,
           }}>
-          <Text style={{fontSize: 18, fontWeight: '500'}}>End Date:</Text>
-          <Text> {moment(item.endDate).format('YYYY/MM/DD')}</Text>
+          <Text style={{fontSize: 18, fontWeight: '500', color: 'black'}}>
+            Deadline:
+          </Text>
+          <Text style={styles.text}>
+            {' '}
+            {moment(item.endDate).format('DD/MM/YYYY')}
+          </Text>
         </View>
         <Divider />
         <View
@@ -114,8 +138,10 @@ const TaskDetail = ({route}) => {
             justifyContent: 'space-between',
             paddingVertical: 15,
           }}>
-          <Text style={{fontSize: 18, fontWeight: '500'}}>Category:</Text>
-          <Text>{setCategory(item.category)}</Text>
+          <Text style={{fontSize: 18, fontWeight: '500', color: 'black'}}>
+            Category:
+          </Text>
+          <Text style={styles.text}>{setCategory(item.category)}</Text>
         </View>
         <Divider />
         <View
@@ -124,8 +150,10 @@ const TaskDetail = ({route}) => {
             justifyContent: 'space-between',
             paddingVertical: 15,
           }}>
-          <Text style={{fontSize: 18, fontWeight: '500'}}>Status:</Text>
-          <Text>
+          <Text style={{fontSize: 18, fontWeight: '500', color: 'black'}}>
+            Status:
+          </Text>
+          <Text style={styles.text}>
             {taskValues.find(task => task.status === item?.status)?.title}
           </Text>
         </View>
@@ -162,8 +190,14 @@ const TaskDetail = ({route}) => {
 export default TaskDetail;
 
 const styles = StyleSheet.create({
-  container: {flex: 1, backgroundColor: colors.WHITE, padding: 10},
+  container: {flex: 1, padding: 20, backgroundColor: colors.WHITE},
   button: {
     marginVertical: 5,
+  },
+  text: {
+    fontWeight: '500',
+    color: '#000',
+    paddingLeft: 10,
+    fontSize: 16,
   },
 });
